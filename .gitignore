@@ -1,0 +1,6 @@
+dist-newstyle
+.ghc.environment.*
+.vscode
+dist
+cabal.project
+cabal.project.local*
