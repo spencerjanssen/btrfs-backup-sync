@@ -4,3 +4,4 @@ dist-newstyle
 dist
 cabal.project
 cabal.project.local*
+result
