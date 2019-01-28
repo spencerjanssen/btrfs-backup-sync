@@ -24,6 +24,12 @@ executable btrfs-backup-sync
     DryRunMachine
   ghc-options: -Wall -Werror
   -- other-extensions:
-  build-depends:       base, filepath, process, containers, directory
+  build-depends:
+    base,
+    filepath,
+    process,
+    containers,
+    directory,
+    temporary
   hs-source-dirs:      src
   default-language:    Haskell2010

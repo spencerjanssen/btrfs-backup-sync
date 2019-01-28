@@ -5,6 +5,7 @@ where
 
 import           Machine
 import qualified System.Directory              as Real
+import qualified System.IO.Temp                as Real
 import qualified System.Process                as Real
 import           System.Exit
 
@@ -12,6 +13,12 @@ run :: Machine a -> IO a
 run (ListDirectory fp f             ) = f <$> Real.listDirectory fp
 run (CreateDirectoryIfMissing p fp x) = do
     Real.createDirectoryIfMissing p fp
+    return x
+run (CreateTempDirectory fp f) = do
+    t <- Real.createTempDirectory fp "btrfs-backup-sync-temp"
+    return $ f t
+run (RenameDirectory src dst x) = do
+    Real.renameDirectory src dst
     return x
 run (CopyFile src dst x) = do
     Real.copyFile src dst

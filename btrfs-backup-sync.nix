@@ -1,5 +1,5 @@
 { mkDerivation, base, containers, directory, filepath, process
-, stdenv
+, stdenv, temporary
 }:
 mkDerivation {
   pname = "btrfs-backup-sync";
@@ -8,7 +8,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    base containers directory filepath process
+    base containers directory filepath process temporary
   ];
   license = stdenv.lib.licenses.bsd3;
 }

@@ -6,3 +6,4 @@ cabal.project
 cabal.project.local*
 result
 test
+hie_wrapper.sh

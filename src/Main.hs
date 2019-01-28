@@ -42,10 +42,11 @@ validSnapshot fp = do
 sendReceive :: Maybe FilePath -> FilePath -> FilePath -> MachineM ()
 sendReceive mparent source parentdir = do
     let dstdir = parentdir </> takeFileName source
-    createDirectoryIfMissing False $ dstdir
-    ExitSuccess <- execPipe [send mparent source, receive dstdir]
+    tempdst <- createTempDirectory parentdir
+    ExitSuccess <- execPipe [send mparent source, receive tempdst]
     copyFile (source </> "info.xml")
-             (parentdir </> takeFileName source </> "info.xml")
+             (tempdst </> "info.xml")
+    renameDirectory tempdst dstdir
     return ()
 
 send :: Maybe FilePath -> FilePath -> Process
