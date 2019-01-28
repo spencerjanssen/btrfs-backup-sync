@@ -1,6 +1,9 @@
 {}:
 let nixpkgs = import <nixpkgs> { };
+    btrfs-backup-sync = nixpkgs.haskellPackages.developPackage {
+        root = ./.;
+    };
 in
 {
-    btrfs-backup-sync = nixpkgs.haskellPackages.callPackage ./btrfs-backup-sync.nix { };
+    inherit btrfs-backup-sync;
 }
