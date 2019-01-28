@@ -9,6 +9,7 @@ import           Data.Map                                 ( Map )
 import qualified Data.Map                      as Map
 import           Control.Monad                            ( guard
                                                           , forM_
+                                                          , filterM
                                                           )
 import           Machine
 import qualified DryRunMachine                 as Fake
@@ -18,17 +19,25 @@ import           System.Environment                       ( getArgs )
 main :: IO ()
 main = do
     [rf, src, dst] <- getArgs
-    case rf of
-        "dry-run" -> eval Fake.dryRun $ sync src dst
-        "real"    -> eval Real.run $ sync src dst
-        _         -> fail "invalid method"
+    mainArgs rf src dst
+
+mainArgs :: String -> FilePath -> FilePath -> IO ()
+mainArgs rf src dst = case rf of
+    "dry-run" -> eval Fake.dryRun $ sync src dst
+    "real"    -> eval Real.run $ sync src dst
+    _         -> fail "invalid method"
 
 sync :: FilePath -> FilePath -> MachineM ()
 sync src dst = do
-    srcs <- map (src </>) <$> listDirectory src
-    dsts <- map (dst </>) <$> listDirectory dst
+    srcs <- filterM validSnapshot =<< map (src </>) <$> listDirectory src
+    dsts <- filterM validSnapshot =<< map (dst </>) <$> listDirectory dst
     let cds = candidates srcs dsts
     forM_ cds $ \(parent, srcvol) -> sendReceive parent srcvol dst
+
+validSnapshot :: FilePath -> MachineM Bool
+validSnapshot fp = do
+    contents <- listDirectory fp
+    return $ elem "snapshot" contents && elem "info.xml" contents
 
 sendReceive :: Maybe FilePath -> FilePath -> FilePath -> MachineM ()
 sendReceive mparent source parentdir = do
