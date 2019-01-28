@@ -11,6 +11,7 @@ import           Control.Monad                            ( guard
                                                           , forM_
                                                           , filterM
                                                           )
+import           Control.Monad.Free                       ( iterM )
 import           Machine
 import qualified DryRunMachine                 as Fake
 import qualified RealMachine                   as Real
@@ -23,8 +24,8 @@ main = do
 
 mainArgs :: String -> FilePath -> FilePath -> IO ()
 mainArgs rf src dst = case rf of
-    "dry-run" -> eval Fake.dryRun $ sync src dst
-    "real"    -> eval Real.run $ sync src dst
+    "dry-run" -> iterM Fake.dryRun $ sync src dst
+    "real"    -> iterM Real.run $ sync src dst
     _         -> fail "invalid method"
 
 sync :: FilePath -> FilePath -> MachineM ()
@@ -42,10 +43,9 @@ validSnapshot fp = do
 sendReceive :: Maybe FilePath -> FilePath -> FilePath -> MachineM ()
 sendReceive mparent source parentdir = do
     let dstdir = parentdir </> takeFileName source
-    tempdst <- createTempDirectory parentdir
+    tempdst     <- createTempDirectory parentdir
     ExitSuccess <- execPipe [send mparent source, receive tempdst]
-    copyFile (source </> "info.xml")
-             (tempdst </> "info.xml")
+    copyFile (source </> "info.xml") (tempdst </> "info.xml")
     renameDirectory tempdst dstdir
     return ()
 

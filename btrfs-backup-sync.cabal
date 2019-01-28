@@ -30,6 +30,7 @@ executable btrfs-backup-sync
     process,
     containers,
     directory,
-    temporary
+    temporary,
+    free
   hs-source-dirs:      src
   default-language:    Haskell2010

@@ -9,24 +9,24 @@ import           System.Exit
 import           Data.List                                ( intercalate )
 import           System.FilePath                          ( (</>) )
 
-dryRun :: Machine a -> IO a
-dryRun (ListDirectory fp f             ) = f <$> Real.listDirectory fp
+dryRun :: Machine (IO a) -> IO a
+dryRun (ListDirectory fp f             ) = f =<< Real.listDirectory fp
 dryRun (CreateDirectoryIfMissing p fp x) = do
     putStrLn $ unwords $ ["mkdir"] ++ [ "-p" | p ] ++ [fp]
-    return x
+    x
 dryRun (CreateTempDirectory fp f) = do
     let tmp = fp </> "fresh_temp_dir"
     putStrLn $ unwords ["mkdir", tmp]
-    return $ f tmp
+    f tmp
 dryRun (RenameDirectory src dst x) = do
     putStrLn $ unwords ["mv", src, dst]
-    return x
+    x
 dryRun (CopyFile src dst x) = do
     putStrLn $ unwords ["cp", src, dst]
-    return x
+    x
 dryRun (ExecPipe p f) = do
     putStrLn $ renderPipe p
-    return $ f ExitSuccess
+    f ExitSuccess
 dryRun (Crash r) = fail r
 
 renderProcess :: Process -> String
