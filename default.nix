@@ -1,6 +1,5 @@
-{pkgs ? import <nixpkgs> { }}:
-let btrfs-backup-sync = pkgs.haskellPackages.callCabal2nix "btrfs-backup-sync" ./. {};
+let hsPkgs = import ./nix/package-set.nix { };
 in
 {
-    inherit btrfs-backup-sync;
+  btrfs-backup-sync = hsPkgs.btrfs-backup-sync.components.exes.btrfs-backup-sync;
 }
