@@ -7,7 +7,12 @@ let pkgs = import sources.nixpkgs (import sources."haskell.nix");
       ghc = pkgs.buildPackages.pkgs.haskell-nix.compiler.${haskellCompiler};
     };
     nivPkgs = (import sources.niv {});
+    hies = (import sources.all-hies {}).bios.selection {
+      selector = p: {
+        ${haskellCompiler} = p.${haskellCompiler};
+      };
+    };
 in
 {
-  inherit hsPkgs pkgs nivPkgs;
+  inherit hsPkgs pkgs nivPkgs hies;
 }
