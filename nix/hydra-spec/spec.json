@@ -1,0 +1,24 @@
+{
+    "enabled": 1,
+    "hidden": false,
+    "description": "Jobsets",
+    "nixexprinput": "btrfs-backup-sync",
+    "nixexprpath": "nix/hydra-spec/spec.nix",
+    "checkinterval": 600,
+    "schedulingshares": 100,
+    "enableemail": false,
+    "emailoverride": "spencerjanssen@gmail.com",
+    "keepnr": 3,
+    "inputs": {
+        "btrfs-backup-sync": {
+            "type": "git",
+            "value": "git://github.com/spencerjanssen/btrfs-backup-sync.git",
+            "emailresponsible": false
+        },
+        "nixpkgs": {
+            "type": "git",
+            "value": "git://github.com/NixOS/nixpkgs nixos-19.09",
+            "emailresponsible": false
+        }
+    }
+}
