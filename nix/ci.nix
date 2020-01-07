@@ -8,5 +8,6 @@ let sources = {
     ps = import ./package-set.nix { inherit sources; };
 in
 {
+  inherit (ps) shell;
   btrfs-backup-sync = ps.hsPkgs.btrfs-backup-sync.components.exes.btrfs-backup-sync;
 }

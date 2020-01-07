@@ -12,7 +12,18 @@ let pkgs = import sources.nixpkgs (import sources."haskell.nix");
         ${haskellCompiler} = p.${haskellCompiler};
       };
     };
+    shell = hsPkgs.shellFor {
+      packages = ps: with ps; [
+        btrfs-backup-sync
+      ];
+      withHoogle = true;
+      exactDeps = true;
+      buildInputs = [
+        nivPkgs.niv
+        hies
+      ];
+    };
 in
 {
-  inherit hsPkgs pkgs nivPkgs hies;
+  inherit hsPkgs pkgs nivPkgs hies shell;
 }
