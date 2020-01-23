@@ -9,6 +9,7 @@ let pkgs = import sources.nixpkgs (import sources."haskell.nix");
     hsPkgs = pkgs.haskell-nix.cabalProject {
       src = pkgs.nix-gitignore.gitignoreSource nixIgnores ../.;
       ghc = pkgs.buildPackages.pkgs.haskell-nix.compiler.${haskellCompiler};
+      name = "btrfs-backup-sync";
     };
     nivPkgs = (import sources.niv {});
     hies = (import sources.all-hies {}).selection {
