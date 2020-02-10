@@ -25,7 +25,7 @@ let pkgs = import nixpkgs {};
             };
         };
         btrfs-backup-sync-unpinned = common // {
-            nixexprpath = "nix/ci.nix";
+            nixexprpath = "nix/hydra-ci.nix";
             description = "btrfs-backup-sync with latest dependencies";
             inputs = unpinnedSources // {
                 btrfs-backup-sync = {
