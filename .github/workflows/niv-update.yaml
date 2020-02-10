@@ -1,0 +1,23 @@
+name: Update dependencies
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  niv_update:
+    name: Update dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v6
+      - name: Niv update
+        run: |
+          nix-shell -p niv --command 'niv init'
+          nix-shell -p niv --command 'niv update'
+      - uses: peter-evans/create-pull-request@v2
+        name: Create PR
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-dependencies
+

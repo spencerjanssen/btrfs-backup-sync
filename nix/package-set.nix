@@ -5,6 +5,7 @@ let pkgs = import sources.nixpkgs (import sources."haskell.nix");
     nixIgnores = [
       "*.nix"
       "nix/"
+      ".github/"
     ];
     hsPkgs = pkgs.haskell-nix.cabalProject {
       src = pkgs.nix-gitignore.gitignoreSource nixIgnores ../.;
