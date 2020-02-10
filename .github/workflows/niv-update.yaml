@@ -1,0 +1,33 @@
+name: Update dependencies
+
+on: push
+  #schedule:
+    #- cron: '* * * * *'
+
+jobs:
+  niv_update:
+    name: Update dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: cachix/install-nix-action@v6
+      - name: all-hies cache
+        uses: cachix/cachix-action@v3
+        with:
+          name: all-hies
+          skipNixBuild: true
+      - name: nix-tools cache
+        uses: cachix/cachix-action@v3
+        with:
+          name: nix-tools
+          skipNixBuild: true
+      - name: Niv update
+        run: |
+          nix-shell -p niv --command 'niv init'
+          nix-shell -p niv --command 'niv update'
+      - uses: peter-evans/create-pull-request@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-dependencies
+          name: Dependency update
+
