@@ -20,4 +20,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-dependencies
+          commit-message: Automated dependency update
+          title: Automated dependency update
 
