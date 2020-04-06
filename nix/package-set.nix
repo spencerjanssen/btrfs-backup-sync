@@ -1,7 +1,7 @@
 { sources ? import ./sources.nix
 , haskellCompiler ? "ghc865"
 }:
-let pkgs = import sources.nixpkgs (import sources."haskell.nix");
+let pkgs = import sources.nixpkgs (import sources."haskell.nix" {}).nixpkgsArgs;
     nixIgnores = [
       "*.nix"
       "nix/"
