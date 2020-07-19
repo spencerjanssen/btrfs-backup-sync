@@ -11,6 +11,7 @@ let pkgs = import sources.nixpkgs (import sources."haskell.nix" {}).nixpkgsArgs;
       src = pkgs.nix-gitignore.gitignoreSource nixIgnores ../.;
       ghc = pkgs.buildPackages.pkgs.haskell-nix.compiler.${haskellCompiler};
       name = "btrfs-backup-sync";
+      compiler-nix-name = haskellCompiler;
     };
     nivPkgs = (import sources.niv {});
     hies = (import sources.all-hies {}).selection {
